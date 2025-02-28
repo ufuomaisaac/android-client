@@ -127,7 +127,7 @@ dependencies {
     testImplementation(libs.junit.jupiter)
     testImplementation(libs.androidx.core.testing)
 
-    //Splash Screen
+    // Splash Screen
     implementation(libs.androidx.core.splashscreen)
 
     // Hilt dependency
@@ -146,7 +146,7 @@ dependencies {
     // ViewModel utilities for Compose
     implementation(libs.androidx.hilt.navigation.compose)
 
-    //LifeCycle
+    // LifeCycle
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.lifecycle.viewModelCompose)
     implementation(libs.androidx.lifecycle.runtimeCompose)
