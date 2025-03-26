@@ -117,7 +117,6 @@ import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Locale
 import java.util.Objects
-import java.util.Date
 
 /**
  * Created by Pronay Sarker on 07/07/2024 (3:45 AM)
@@ -716,7 +715,7 @@ private fun createClientPayload(
     clientPayload.activationDate =
         SimpleDateFormat("dd MMMM yyyy", Locale.getDefault()).format(activationDate)
     clientPayload.dateOfBirth =
-        SimpleDateFormat("dd MMMM yyyy", Locale.getDefault()).format(Date(dateOfBirth))
+        SimpleDateFormat("dd MMMM yyyy", Locale.getDefault()).format(dateOfBirth)
 
     // Optional fields
     if (middleName.isNotEmpty()) {
