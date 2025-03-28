@@ -129,11 +129,12 @@ class CreateNewClientViewModel @Inject constructor(
                     override fun onError(e: Throwable) {
                         try {
                             if (e is HttpException) {
-                                val errorMessage = e.response()?.errorBody()
-                                    ?.string() ?: ""
-                                Log.d("error", errorMessage)
-                                _createNewClientUiState.value =
-                                    CreateNewClientUiState.ShowStringError(errorMessage)
+                                val errorMessage = e.response()?.message()
+                                if (errorMessage != null) {
+                                    Log.d("error", errorMessage)
+                                    _createNewClientUiState.value =
+                                        CreateNewClientUiState.ShowStringError(errorMessage)
+                                }
                             }
                         } catch (throwable: Throwable) {
                             RxJavaPlugins.getInstance().errorHandler.handleError(e)
