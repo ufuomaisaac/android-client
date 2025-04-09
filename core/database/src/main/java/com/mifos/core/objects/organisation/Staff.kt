@@ -52,3 +52,17 @@ data class Staff(
     @Column
     var isActive: Boolean? = null,
 ) : MifosBaseModel(), Parcelable
+
+@Parcelize
+data class StaffResponse(
+    val displayName: String? = null,
+    val externalId: String? = null,
+    val firstname: String? = null,
+    val id: Long? = null,
+    val isActive: Boolean? = null,
+    val isLoanOfficer: Boolean? = null,
+    val joiningDate: List<Int>? = null,
+    val lastname: String? = null,
+    val officeId: Long? = null,
+    val officeName: String? = null,
+) : Parcelable
