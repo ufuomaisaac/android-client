@@ -8,17 +8,25 @@
  * See https://github.com/openMF/android-client/blob/master/LICENSE.md
  */
 plugins {
-    alias(libs.plugins.mifos.android.library)
-    id("kotlin-parcelize")
+    alias(libs.plugins.mifos.kmp.library)
+    alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.kotlin.parcelize)
 }
+
 android{
     namespace = "com.mifos.core.model"
-
-    defaultConfig {
-        consumerProguardFiles("consumer-rules.pro")
-    }
 }
 
-dependencies {
-    implementation(libs.converter.gson)
+kotlin {
+    androidTarget {
+        compilerOptions {
+            freeCompilerArgs.addAll("-P", "plugin:org.jetbrains.kotlin.parcelize:additionalAnnotation=com.mifos.core.model.utils.Parcelize")
+        }
+    }
+    sourceSets {
+        commonMain.dependencies {
+            implementation(libs.kotlinx.serialization.json)
+            implementation(libs.kotlinx.datetime)
+        }
+    }
 }

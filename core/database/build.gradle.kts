@@ -8,11 +8,10 @@
  * See https://github.com/openMF/android-client/blob/master/LICENSE.md
  */
 plugins {
-    alias(libs.plugins.mifos.android.library)
-    alias(libs.plugins.mifos.android.hilt)
-    alias(libs.plugins.mifos.android.library.jacoco)
-    id(libs.plugins.kotlin.parcelize.get().pluginId)
+    alias(libs.plugins.mifos.kmp.library)
     alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.mifos.kmp.room)
+    alias(libs.plugins.kotlin.parcelize)
 }
 
 android {
@@ -23,27 +22,29 @@ android {
     }
 }
 
-dependencies {
-    api(projects.core.common)
-    api(projects.core.model)
-    api(projects.core.datastore)
+kotlin{
+    sourceSets {
+        commonMain.dependencies {
+            implementation(libs.kotlinx.coroutines.core)
+            implementation(libs.kotlinx.serialization.json)
+            api(projects.core.common)
+            api(projects.core.model)
+        }
 
-    implementation(libs.converter.gson)
+        androidMain.dependencies {
+            implementation(libs.koin.android)
+            implementation(libs.androidx.room.runtime)
+            implementation(libs.androidx.sqlite.bundled)
+        }
 
-    //rxjava dependencies
-    implementation(libs.rxandroid)
-    implementation(libs.rxjava)
+        nativeMain.dependencies {
+            implementation(libs.androidx.room.runtime)
+            implementation(libs.androidx.sqlite.bundled)
+        }
 
-    //DBFlow dependencies
-    kapt(libs.dbflow.processor)
-    implementation(libs.dbflow)
-    kapt(libs.github.dbflow.processor)
-
-    // Hilt dependency
-    implementation(libs.hilt.android)
-    kapt(libs.hilt.compiler)
-
-    implementation(libs.kotlinx.serialization.json)
-
-    androidTestImplementation(projects.core.testing)
+        desktopMain.dependencies {
+            implementation(libs.androidx.room.runtime)
+            implementation(libs.androidx.sqlite.bundled)
+        }
+    }
 }

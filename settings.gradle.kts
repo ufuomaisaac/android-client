@@ -1,5 +1,3 @@
-import org.ajoberstar.reckon.gradle.ReckonExtension
-
 pluginManagement {
     includeBuild("build-logic")
     repositories {
@@ -19,24 +17,14 @@ dependencyResolutionManagement {
     }
 }
 
-plugins {
-    id("org.gradle.toolchains.foojay-resolver-convention") version("0.8.0")
-    id("org.ajoberstar.reckon.settings") version("0.18.3")
-}
-
-extensions.configure<ReckonExtension> {
-    setDefaultInferredScope("patch")
-    stages("beta", "final")
-    setScopeCalc { java.util.Optional.of(org.ajoberstar.reckon.core.Scope.PATCH) }
-    setScopeCalc(calcScopeFromProp().or(calcScopeFromCommitMessages()))
-    setStageCalc(calcStageFromProp())
-    setTagWriter { it.toString() }
-}
-
 rootProject.name = "AndroidClient"
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
-include(":mifosng-android")
+include(":cmp-android")
+include(":cmp-desktop")
+include(":cmp-ios")
+include(":cmp-navigation")
+include(":cmp-shared")
 
 include(":core:common")
 include(":core:data")
@@ -46,16 +34,15 @@ include(":core:domain")
 include(":core:datastore")
 include(":core:model")
 include(":core:network")
-include(":core:testing")
 include(":core:ui")
 
 // Lint Modules
-include(":lint")
+//include(":lint")
 
 // Library Modules
-include(":libs:country-code-picker")
-include(":libs:pullrefresh")
-include(":libs:mifos-passcode")
+//include(":libs:country-code-picker")
+//include(":libs:pullrefresh")
+//include(":libs:mifos-passcode")
 
 include(":feature:about")
 include(":feature:activate")
@@ -65,8 +52,8 @@ include(":feature:checker-inbox-task")
 include(":feature:client")
 include(":feature:collectionSheet")
 include(":feature:data-table")
-include(":feature:document")
 include(":feature:groups")
+include(":feature:document")
 include(":feature:loan")
 include(":feature:note")
 include(":feature:offline")
@@ -75,3 +62,5 @@ include(":feature:report")
 include(":feature:savings")
 include(":feature:search")
 include(":feature:settings")
+//include(":feature:passcode")
+include(":feature:search")

@@ -24,7 +24,7 @@ dependencies {
     compileOnly(libs.firebase.crashlytics.gradlePlugin)
     compileOnly(libs.firebase.performance.gradlePlugin)
     compileOnly(libs.kotlin.gradlePlugin)
-//    compileOnly(libs.compose.gradlePlugin)
+    compileOnly(libs.compose.gradlePlugin)
     compileOnly(libs.ksp.gradlePlugin)
     compileOnly(libs.room.gradlePlugin)
     compileOnly(libs.detekt.gradlePlugin)
@@ -50,22 +50,6 @@ gradlePlugin {
             id = "mifos.android.application"
             implementationClass = "AndroidApplicationConventionPlugin"
         }
-        register("androidApplicationJacoco") {
-            id = "mifos.android.application.jacoco"
-            implementationClass = "AndroidApplicationJacocoConventionPlugin"
-        }
-        register("androidHilt") {
-            id = "mifos.android.hilt"
-            implementationClass = "AndroidHiltConventionPlugin"
-        }
-        register("androidLibraryCompose") {
-            id = "mifos.android.library.compose"
-            implementationClass = "AndroidLibraryComposeConventionPlugin"
-        }
-        register("androidLibrary") {
-            id = "mifos.android.library"
-            implementationClass = "AndroidLibraryConventionPlugin"
-        }
         register("androidFeature") {
             id = "mifos.android.feature"
             implementationClass = "AndroidFeatureConventionPlugin"
@@ -73,14 +57,6 @@ gradlePlugin {
         register("androidTest") {
             id = "mifos.android.test"
             implementationClass = "AndroidTestConventionPlugin"
-        }
-        register("androidLibraryJacoco") {
-            id = "mifos.android.library.jacoco"
-            implementationClass = "AndroidLibraryJacocoConventionPlugin"
-        }
-        register("androidRoom") {
-            id = "mifos.android.room"
-            implementationClass = "AndroidRoomConventionPlugin"
         }
         register("androidFirebase") {
             id = "mifos.android.application.firebase"
@@ -117,6 +93,32 @@ gradlePlugin {
             id = "mifos.git.hooks"
             implementationClass = "MifosGitHooksConventionPlugin"
             description = "Installs git hooks for the project"
+        }
+
+        // KMP & CMP Plugins
+        register("cmpFeature") {
+            id = "mifos.cmp.feature"
+            implementationClass = "CMPFeatureConventionPlugin"
+        }
+        register("kmpKoin") {
+            id = "mifos.kmp.koin"
+            implementationClass = "KMPKoinConventionPlugin"
+        }
+        register("kmpLibrary") {
+            id = "mifos.kmp.library"
+            implementationClass = "KMPLibraryConventionPlugin"
+        }
+
+        // koin android
+        register("androidKoin"){
+            id = "mifos.android.koin"
+            implementationClass = "KoinAndroidConventionPlugin"
+        }
+
+        //room android
+        register("kmpRoom") {
+            id = "mifos.kmp.room"
+            implementationClass = "KMPRoomConventionPlugin"
         }
     }
 }
