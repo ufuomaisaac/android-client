@@ -65,7 +65,6 @@ internal fun ClientIdentifiersDialogScreen(
     onDismiss: () -> Unit,
     onRetry: () -> Unit,
     onCreateIdentifier: (IdentifierPayload) -> Unit,
-    onIdentifierCreated: () -> Unit,
 ) {
     Dialog(
         onDismissRequest = { onDismiss() },
@@ -122,7 +121,6 @@ internal fun ClientIdentifiersDialogScreen(
                         }
 
                         is ClientIdentifierDialogUiState.IdentifierCreatedSuccessfully -> {
-                            onIdentifierCreated()
                         }
 
                         is ClientIdentifierDialogUiState.Loading -> MifosCircularProgress()
@@ -279,6 +277,5 @@ private fun ClientIdentifiersDialogScreenPreview(
         onDismiss = {},
         onRetry = {},
         onCreateIdentifier = {},
-        onIdentifierCreated = {},
     )
 }
