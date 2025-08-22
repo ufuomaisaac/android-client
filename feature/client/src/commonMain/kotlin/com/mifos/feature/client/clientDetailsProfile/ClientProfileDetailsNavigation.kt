@@ -7,9 +7,7 @@
  *
  * See https://github.com/openMF/android-client/blob/master/LICENSE.md
  */
-@file:Suppress("MatchingDeclarationName")
-
-package com.mifos.feature.client.clientProfile
+package com.mifos.feature.client.clientDetailsProfile
 
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
@@ -17,31 +15,23 @@ import androidx.navigation.compose.composable
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class ClientProfileRoute(
+data class ClientProfileDetailsRoute(
     val id: Int = -1,
 )
 
-fun NavGraphBuilder.clientProfileDestination(
+fun NavGraphBuilder.clientProfileDetailsDestination(
     onNavigateBack: () -> Unit,
-    notes: (Int) -> Unit,
-    documents: (Int) -> Unit,
-    identifiers: (Int) -> Unit,
-    navigateToClientDetailsScreen: (Int) -> Unit,
 ) {
-    composable<ClientProfileRoute> {
-        ClientProfileScreen(
-            notes = notes,
-            documents = documents,
-            identifiers = identifiers,
+    composable<ClientProfileDetailsRoute> {
+        ClientProfileDetailsScreen(
             onNavigateBack = onNavigateBack,
-            navigateToClientDetailsScreen = navigateToClientDetailsScreen,
         )
     }
 }
 
-fun NavController.navigateToClientProfileRoute(id: Int) {
+fun NavController.navigateToClientDetailsProfileRoute(id: Int) {
     this.navigate(
-        ClientProfileRoute(
+        ClientProfileDetailsRoute(
             id = id,
         ),
     )

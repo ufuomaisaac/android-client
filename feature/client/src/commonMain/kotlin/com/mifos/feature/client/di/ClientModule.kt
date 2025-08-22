@@ -11,6 +11,7 @@ package com.mifos.feature.client.di
 
 import com.mifos.feature.client.clientCharges.ClientChargesViewModel
 import com.mifos.feature.client.clientDetails.ClientDetailsViewModel
+import com.mifos.feature.client.clientDetailsProfile.ClientProfileDetailsViewModel
 import com.mifos.feature.client.clientIdentifiers.ClientIdentifiersViewModel
 import com.mifos.feature.client.clientPinpoint.PinPointClientViewModel
 import com.mifos.feature.client.clientProfile.ClientProfileViewModel
@@ -35,4 +36,5 @@ val ClientModule = module {
     viewModelOf(::CreateNewClientViewModel)
     viewModelOf(::SyncClientsDialogViewModel)
     viewModelOf(::ClientProfileViewModel)
+    viewModelOf(::ClientProfileDetailsViewModel)
 }

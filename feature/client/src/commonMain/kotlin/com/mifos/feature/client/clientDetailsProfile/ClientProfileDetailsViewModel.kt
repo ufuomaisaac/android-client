@@ -7,8 +7,20 @@
  *
  * See https://github.com/openMF/android-client/blob/master/LICENSE.md
  */
-package com.mifos.feature.client.clientProfile
+package com.mifos.feature.client.clientDetailsProfile
 
+import androidclient.feature.client.generated.resources.Res
+import androidclient.feature.client.generated.resources.account_no
+import androidclient.feature.client.generated.resources.activation_date
+import androidclient.feature.client.generated.resources.client_classification
+import androidclient.feature.client.generated.resources.client_type
+import androidclient.feature.client.generated.resources.date_of_birth
+import androidclient.feature.client.generated.resources.external_id
+import androidclient.feature.client.generated.resources.gender
+import androidclient.feature.client.generated.resources.legal_form
+import androidclient.feature.client.generated.resources.office
+import androidclient.feature.client.generated.resources.staff
+import androidclient.feature.client.generated.resources.submission_date
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
@@ -18,7 +30,8 @@ import com.mifos.core.data.util.NetworkMonitor
 import com.mifos.core.domain.useCases.GetClientDetailsUseCase
 import com.mifos.core.ui.util.BaseViewModel
 import com.mifos.core.ui.util.imageToByteArray
-import com.mifos.feature.client.clientProfile.components.ClientProfileActionItem
+import com.mifos.core.ui.util.toDateString
+import com.mifos.feature.client.clientDetailsProfile.components.ClientProfileDetailsActionItem
 import com.mifos.room.entities.client.ClientEntity
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -33,16 +46,16 @@ import org.jetbrains.compose.resources.StringResource
  * @param clientDetailsRepo Repository to fetch client details and profile image.
  * @param networkMonitor Observes network connectivity status.
  */
-internal class ClientProfileViewModel(
+internal class ClientProfileDetailsViewModel(
     savedStateHandle: SavedStateHandle,
     private val getClientDetailsUseCase: GetClientDetailsUseCase,
     private val clientDetailsRepo: ClientDetailsRepository,
     private val networkMonitor: NetworkMonitor,
-) : BaseViewModel<ClientProfileState, ClientProfileEvent, ClientProfileAction>(
-    initialState = ClientProfileState(),
+) : BaseViewModel<ClientProfileDetailsState, ClientProfileDetailsEvent, ClientProfileDetailsAction>(
+    initialState = ClientProfileDetailsState(),
 ) {
 
-    private val route = savedStateHandle.toRoute<ClientProfileRoute>()
+    private val route = savedStateHandle.toRoute<ClientProfileDetailsRoute>()
 
     init {
         getClientAndObserveNetwork()
@@ -67,6 +80,7 @@ internal class ClientProfileViewModel(
                         mutableStateFlow.update {
                             it.copy(
                                 client = result.data.client,
+                                details = buildClientDetails(result.data.client),
                                 dialogState = null,
                             )
                         }
@@ -75,7 +89,7 @@ internal class ClientProfileViewModel(
                     is DataState.Error -> {
                         mutableStateFlow.update {
                             it.copy(
-                                dialogState = ClientProfileState.DialogState.Error(result.message),
+                                dialogState = ClientProfileDetailsState.DialogState.Error(result.message),
                             )
                         }
                     }
@@ -83,7 +97,7 @@ internal class ClientProfileViewModel(
                     DataState.Loading -> {
                         mutableStateFlow.update {
                             it.copy(
-                                dialogState = ClientProfileState.DialogState.Loading,
+                                dialogState = ClientProfileDetailsState.DialogState.Loading,
                             )
                         }
                     }
@@ -117,13 +131,48 @@ internal class ClientProfileViewModel(
         }
     }
 
-    override fun handleAction(action: ClientProfileAction) {
+    private fun buildClientDetails(client: ClientEntity?): Map<String, Map<StringResource, String>> {
+        if (client == null) return emptyMap()
+
+        val personalInfo = buildMap {
+            put(Res.string.gender, "")
+            client.dateOfBirth.toDateString().takeIf { it.isNotBlank() }?.let {
+                put(Res.string.date_of_birth, it)
+            }
+        }
+
+        val accountInfo = buildMap {
+            client.accountNo?.takeIf { it.isNotBlank() }?.let { put(Res.string.account_no, it) }
+            client.officeName?.takeIf { it.isNotBlank() }?.let { put(Res.string.office, it) }
+            client.externalId?.takeIf { it.isNotBlank() }?.let { put(Res.string.external_id, it) }
+        }
+
+        val otherInfo = buildMap {
+            client.legalForm?.value?.takeIf { it.isNotBlank() }?.let { put(Res.string.legal_form, it) }
+            put(Res.string.client_type, "")
+            put(Res.string.client_classification, "")
+            client.timeline?.submittedOnDate?.toDateString()?.takeIf { it.isNotBlank() }?.let { put(Res.string.submission_date, it) }
+            client.activationDate.toDateString()
+                .takeIf { it.isNotBlank() }?.let { put(Res.string.activation_date, it) }
+            client.staffName?.takeIf { it.isNotBlank() }?.let { put(Res.string.staff, it) }
+        }
+
+        return mapOf(
+            "Personal Info" to personalInfo,
+            "Account Info" to accountInfo,
+            "Other Info" to otherInfo,
+        )
+    }
+
+    override fun handleAction(action: ClientProfileDetailsAction) {
         when (action) {
-            ClientProfileAction.NavigateBack -> sendEvent(ClientProfileEvent.NavigateBack)
-            is ClientProfileAction.OnActionClick ->
-                sendEvent(ClientProfileEvent.OnActionClick(action.action))
-            ClientProfileAction.OnRetry -> getClientAndObserveNetwork()
-            ClientProfileAction.NavigateToClientDetailsScreen -> sendEvent(ClientProfileEvent.NavigateToClientDetailsScreen)
+            ClientProfileDetailsAction.NavigateBack -> sendEvent(ClientProfileDetailsEvent.NavigateBack)
+            is ClientProfileDetailsAction.OnActionClick ->
+                sendEvent(ClientProfileDetailsEvent.OnActionClick(action.action))
+            ClientProfileDetailsAction.OnRetry -> getClientAndObserveNetwork()
+            ClientProfileDetailsAction.OnUpdateDetailsClick -> {}
+            ClientProfileDetailsAction.OnUpdatePhotoClick -> {}
+            ClientProfileDetailsAction.OnUpdateSignatureClick -> {}
         }
     }
 }
@@ -132,11 +181,11 @@ internal class ClientProfileViewModel(
  * State holder for the Client Profile screen.
  * Contains all values needed to render the UI and manage logic.
  */
-data class ClientProfileState(
+data class ClientProfileDetailsState(
     val profileImage: ByteArray? = null,
     val client: ClientEntity? = null,
     val dialogState: DialogState? = null,
-    val details: Map<StringResource, String> = emptyMap(),
+    val details: Map<String, Map<StringResource, String>> = emptyMap(),
     val networkConnection: Boolean = false,
 ) {
     /**
@@ -151,28 +200,30 @@ data class ClientProfileState(
 /**
  * One-time UI events for the Client Profile screen.
  */
-sealed interface ClientProfileEvent {
+sealed interface ClientProfileDetailsEvent {
     /** Navigates back to the previous screen */
-    data object NavigateBack : ClientProfileEvent
+    data object NavigateBack : ClientProfileDetailsEvent
 
     /** Triggered when an action item is clicked */
-    data class OnActionClick(val action: ClientProfileActionItem) : ClientProfileEvent
-
-    data object NavigateToClientDetailsScreen : ClientProfileEvent
+    data class OnActionClick(val action: ClientProfileDetailsActionItem) : ClientProfileDetailsEvent
 }
 
 /**
  * Represents user or system actions for the Client Profile screen.
  */
-sealed interface ClientProfileAction {
+sealed interface ClientProfileDetailsAction {
     /** Navigate back from the screen */
-    data object NavigateBack : ClientProfileAction
+    data object NavigateBack : ClientProfileDetailsAction
 
     /** User clicks on an action item */
-    data class OnActionClick(val action: ClientProfileActionItem) : ClientProfileAction
+    data class OnActionClick(val action: ClientProfileDetailsActionItem) : ClientProfileDetailsAction
 
     /** User clicks on Retry */
-    data object OnRetry : ClientProfileAction
+    data object OnRetry : ClientProfileDetailsAction
 
-    data object NavigateToClientDetailsScreen : ClientProfileAction
+    data object OnUpdatePhotoClick : ClientProfileDetailsAction
+
+    data object OnUpdateSignatureClick : ClientProfileDetailsAction
+
+    data object OnUpdateDetailsClick : ClientProfileDetailsAction
 }
