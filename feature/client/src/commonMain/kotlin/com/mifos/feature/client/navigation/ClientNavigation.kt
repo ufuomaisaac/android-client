@@ -22,6 +22,7 @@ import com.mifos.feature.client.clientCharges.ClientChargesScreen
 import com.mifos.feature.client.clientDetails.ClientDetailsScreen
 import com.mifos.feature.client.clientDetailsProfile.clientProfileDetailsDestination
 import com.mifos.feature.client.clientDetailsProfile.navigateToClientDetailsProfileRoute
+import com.mifos.feature.client.clientDetailsProfile.navigateToClientDetailsProfileRouteOnStatus
 import com.mifos.feature.client.clientEditProfile.clientEditProfileDestination
 import com.mifos.feature.client.clientEditProfile.navigateToClientProfileEditProfileRoute
 import com.mifos.feature.client.clientIdentifiers.ClientIdentifiersScreen
@@ -33,6 +34,8 @@ import com.mifos.feature.client.clientStaff.clientStaffDestination
 import com.mifos.feature.client.clientStaff.navigateToClientStaffRoute
 import com.mifos.feature.client.clientSurveyList.SurveyListScreen
 import com.mifos.feature.client.clientSurveyQuestion.SurveyQuestionScreen
+import com.mifos.feature.client.clientTransfer.clientTransferDestination
+import com.mifos.feature.client.clientTransfer.navigateToClientTransferRoute
 import com.mifos.feature.client.clientsList.ClientListScreen
 import com.mifos.feature.client.createNewClient.CreateNewClientScreen
 import com.mifos.room.entities.accounts.savings.SavingAccountDepositTypeEntity
@@ -119,6 +122,7 @@ fun NavGraphBuilder.clientNavGraph(
             navigateToUpdatePhoto = navController::navigateToClientProfileEditProfileRoute,
             navigateToAssignStaff = navController::navigateToClientStaffRoute,
             navigateToHome = navigateToHome,
+            navigateToClientTransfer = navController::navigateToClientTransferRoute,
         )
         clientEditProfileDestination(
             onNavigateBack = navController::popBackStack,
@@ -126,6 +130,10 @@ fun NavGraphBuilder.clientNavGraph(
         clientStaffDestination(
             onNavigateBack = navController::popBackStack,
             navigateToHome = navigateToHome,
+        )
+        clientTransferDestination(
+            onNavigateBack = navController::popBackStack,
+            onNavigateNext = navController::navigateToClientDetailsProfileRouteOnStatus,
         )
     }
 }

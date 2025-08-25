@@ -23,6 +23,7 @@ fun NavGraphBuilder.clientProfileDetailsDestination(
     onNavigateBack: () -> Unit,
     navigateToUpdatePhoto: (Int, String, String) -> Unit,
     navigateToAssignStaff: (Int) -> Unit,
+    navigateToClientTransfer: (Int) -> Unit,
     navigateToHome: () -> Unit,
 ) {
     composable<ClientProfileDetailsRoute> {
@@ -31,6 +32,7 @@ fun NavGraphBuilder.clientProfileDetailsDestination(
             navigateToUpdatePhoto = navigateToUpdatePhoto,
             navigateToAssignStaff = navigateToAssignStaff,
             navigateToHome = navigateToHome,
+            navigateToClientTransfer = navigateToClientTransfer,
         )
     }
 }
@@ -41,4 +43,13 @@ fun NavController.navigateToClientDetailsProfileRoute(id: Int) {
             id = id,
         ),
     )
+}
+
+fun NavController.navigateToClientDetailsProfileRouteOnStatus(id: Int) {
+    this.navigate(
+        ClientProfileDetailsRoute(id = id),
+    ) {
+        popUpTo(ClientProfileDetailsRoute(id = id)) { inclusive = true }
+        launchSingleTop = true
+    }
 }
