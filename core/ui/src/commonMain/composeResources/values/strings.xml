@@ -98,6 +98,4 @@
     <string name="error_digits_only">This field should contain digits only</string>
     <string name="error_number_zero">Number should not be zero</string>
 
-
-
 </resources>
