@@ -36,7 +36,6 @@ import androidx.compose.material.icons.filled.Error
 import androidx.compose.material.icons.filled.FilterList
 import androidx.compose.material.icons.filled.FlashOff
 import androidx.compose.material.icons.filled.FlashOn
-import androidx.compose.material.icons.filled.Image
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Link
 import androidx.compose.material.icons.filled.LocationOn
@@ -66,7 +65,6 @@ import androidx.compose.material.icons.outlined.Group
 import androidx.compose.material.icons.outlined.Groups
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.HomeWork
-import androidx.compose.material.icons.outlined.Image
 import androidx.compose.material.icons.outlined.Mail
 import androidx.compose.material.icons.outlined.MobileFriendly
 import androidx.compose.material.icons.outlined.Numbers
@@ -75,7 +73,6 @@ import androidx.compose.material.icons.outlined.PersonOutline
 import androidx.compose.material.icons.outlined.Redo
 import androidx.compose.material.icons.outlined.Refresh
 import androidx.compose.material.icons.outlined.Savings
-import androidx.compose.material.icons.outlined.Undo
 import androidx.compose.material.icons.outlined.Visibility
 import androidx.compose.material.icons.outlined.VisibilityOff
 import androidx.compose.material.icons.outlined.Wallet
@@ -154,7 +151,7 @@ object MifosIcons {
     val Save = Icons.Rounded.Download
     val WifiOff = Icons.Default.WifiOff
     val Upload = Icons.Rounded.FileUpload
-    val Gallery = Icons.Outlined.Image
+    val Gallery = GalleryIcon
     val ArrowDropDown = Icons.Default.ArrowDropDown
     val AssignmentTurnedIn = Icons.Default.AssignmentTurnedIn
     val Dashboard = Icons.Rounded.Dashboard
@@ -228,6 +225,8 @@ object MifosIcons {
     val Calendar = com.mifos.core.designsystem.icon.Calender
     val Folder = com.mifos.core.designsystem.icon.Folder
     val GrowthChart = GrownChart
+
+    val PickDocument = ClipDocument
     val ShielOutlined = ShieldOutlined
     val Edit = com.mifos.core.designsystem.icon.Edit
 
@@ -236,6 +235,8 @@ object MifosIcons {
     val FileUpload = Icons.Outlined.FileUpload
     val DeleteDocument = Icons.Outlined.DeleteOutline
     val MakeRepayment = Icons.Outlined.Payments
+
+    val RightTick = com.mifos.core.designsystem.icon.RightTick
     val Draw = Icons.Outlined.Draw
     val Refresh = Icons.Outlined.Refresh
     val Undo = Icons.AutoMirrored.Outlined.Undo

@@ -14,9 +14,12 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.navigation
 import androidx.navigation.navArgument
-import androidx.navigation.navigation
 import com.mifos.core.common.utils.Constants
+import com.mifos.feature.client.clientAddDocuments.AddDocumentRoute
+import com.mifos.feature.client.clientAddDocuments.clientAddDocumentGraphRoute
+import com.mifos.feature.client.clientAddDocuments.navigateToClientAddDocumentRoute
 import com.mifos.feature.client.clientAddress.addAddress.clientAddAddressRoute
 import com.mifos.feature.client.clientAddress.addAddress.navigateToClientAddAddressRoute
 import com.mifos.feature.client.clientAddress.clientAddressNavigation
@@ -33,6 +36,9 @@ import com.mifos.feature.client.clientDetails.ClientDetailsScreen
 import com.mifos.feature.client.clientDetailsProfile.clientProfileDetailsDestination
 import com.mifos.feature.client.clientDetailsProfile.navigateToClientDetailsProfileRoute
 import com.mifos.feature.client.clientDetailsProfile.navigateToClientDetailsProfileRouteOnStatus
+import com.mifos.feature.client.clientDocuments.ClientDocumentsRoute
+import com.mifos.feature.client.clientDocuments.clientDocumentsDestination
+import com.mifos.feature.client.clientDocuments.navigateToClientDocumentsRoute
 import com.mifos.feature.client.clientEditDetails.clientEditDetailsDestination
 import com.mifos.feature.client.clientEditDetails.navigateToClientEditDetailsRoute
 import com.mifos.feature.client.clientEditProfile.clientEditProfileDestination
@@ -61,6 +67,8 @@ import com.mifos.feature.client.clientUpdateDefaultAccount.navigateToUpdateDefau
 import com.mifos.feature.client.clientUpdateDefaultAccount.updateDefaultAccountDestination
 import com.mifos.feature.client.clientsList.ClientListScreen
 import com.mifos.feature.client.createNewClient.CreateNewClientScreen
+import com.mifos.feature.client.documentPreviewScreen.createDocumentPreviewRoute
+import com.mifos.feature.client.documentPreviewScreen.navigateToDocumentPreviewRoute
 import com.mifos.feature.client.fixedDepositAccount.clientFixedDepositAccountDestination
 import com.mifos.feature.client.fixedDepositAccount.navigateToFixedDepositAccountRoute
 import com.mifos.feature.client.recurringDepositAccount.clientRecurringDepositAccountDestination
@@ -147,7 +155,7 @@ fun NavGraphBuilder.clientNavGraph(
         clientProfileDestination(
             onNavigateBack = navController::popBackStack,
             notes = notes,
-            documents = documents,
+            documents = navController::navigateToClientDocumentsRoute,
             identifiers = navController::navigateToClientIdentifiersScreen,
             navigateToClientDetailsScreen = navController::navigateToClientDetailsProfileRoute,
             viewAddress = navController::navigateToClientAddressRoute,
@@ -165,6 +173,28 @@ fun NavGraphBuilder.clientNavGraph(
             onNavigateBack = navController::popBackStack,
             navController = navController,
             onNavigateNext = navController::navigateToClientAddressRouteOnStatus,
+        )
+
+        clientDocumentsDestination(
+            navController = navController,
+            navigateBack = navController::popBackStack,
+            navigateToAddDocuments = navController::navigateToClientAddDocumentRoute,
+            onViewDocument = navController::navigateToDocumentPreviewRoute,
+        )
+
+        clientAddDocumentGraphRoute(
+            navController = navController,
+            navigateBack = {
+                navController.popBackStack<AddDocumentRoute>(inclusive = true)
+            },
+            navigateToDocumentPreview = navController::navigateToDocumentPreviewRoute,
+        )
+
+        createDocumentPreviewRoute(
+            navigateBack = navController::popBackStack,
+            documentRejected = {
+                navController.popBackStack<ClientDocumentsRoute>(inclusive = false)
+            },
         )
 
         clientProfileGeneralDestination(

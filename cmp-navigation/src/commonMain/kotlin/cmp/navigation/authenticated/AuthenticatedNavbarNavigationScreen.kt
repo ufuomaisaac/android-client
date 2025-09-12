@@ -68,7 +68,6 @@ import cmp.navigation.components.ScaffoldNavigationData
 import cmp.navigation.navigation.HomeDestinationsScreen
 import cmp.navigation.ui.rememberMifosNavController
 import com.mifos.core.common.utils.Constants
-import com.mifos.core.designsystem.component.MifosScaffold
 import com.mifos.core.designsystem.icon.MifosIcons
 import com.mifos.core.designsystem.theme.DesignToken
 import com.mifos.core.ui.RootTransitionProviders

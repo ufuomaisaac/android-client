@@ -57,8 +57,9 @@ interface DocumentService {
      * @param documentId    - Document Id
      * @return ResponseBody
      */
+
+    @Headers("Accept: text/plain, application/json, */*")
     @GET("{entityType}/{entityId}/" + APIEndPoint.DOCUMENTS + "/{documentId}/attachment")
-    @Headers("Accept: application/octet-stream")
     fun downloadDocument(
         @Path("entityType") entityType: String,
         @Path("entityId") entityId: Int,

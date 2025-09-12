@@ -11,6 +11,7 @@ package com.mifos.core.designsystem.component
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -35,6 +36,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.arkivanov.essenty.backhandler.BackCallback
 import com.mifos.core.designsystem.theme.DesignToken
@@ -109,6 +111,79 @@ fun MifosBottomSheetOptionItem(
                     .padding(DesignToken.padding.medium)
                     .size(DesignToken.sizes.iconMedium),
                 tint = MaterialTheme.colorScheme.primary,
+            )
+        }
+        Spacer(Modifier.height(DesignToken.padding.small))
+        Text(
+            text = label,
+            style = MifosTypography.labelMedium,
+        )
+    }
+}
+
+@Composable
+fun MifosBottomSheetOptionItem(
+    label: String,
+    icon: ImageVector,
+    elevation: Dp = DesignToken.elevation.elevation,
+    onClick: () -> Unit,
+) {
+    Column(
+        modifier = Modifier
+            .padding(DesignToken.padding.large)
+            .clickable { onClick() },
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center,
+    ) {
+        MifosCard(
+            elevation = elevation,
+        ) {
+            Icon(
+                imageVector = icon,
+                contentDescription = null,
+                modifier = Modifier
+                    .padding(DesignToken.padding.medium)
+                    .size(DesignToken.sizes.iconAverage),
+                tint = MaterialTheme.colorScheme.primary,
+            )
+        }
+        Spacer(Modifier.height(DesignToken.padding.small))
+        Text(
+            text = label,
+            style = MifosTypography.labelMedium,
+        )
+    }
+}
+
+@Composable
+fun MifosBottomSheetOptionItem(
+    label: String,
+    icon: ImageVector,
+    onClick: () -> Unit,
+) {
+    Column(
+        modifier = Modifier
+            .padding(DesignToken.padding.large)
+            .clickable { onClick() },
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center,
+    ) {
+        MifosCard(
+            elevation = DesignToken.padding.extraExtraSmall,
+            modifier = Modifier
+                .clickable(onClick = onClick),
+            shape = DesignToken.shapes.small,
+            colors = CardDefaults.cardColors(
+                containerColor = MaterialTheme.colorScheme.onPrimary,
+                contentColor = MaterialTheme.colorScheme.primary,
+            ),
+        ) {
+            Icon(
+                imageVector = icon,
+                contentDescription = null,
+                modifier = Modifier
+                    .padding(DesignToken.padding.medium)
+                    .size(DesignToken.sizes.iconAverage),
             )
         }
         Spacer(Modifier.height(DesignToken.padding.small))
