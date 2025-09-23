@@ -179,8 +179,10 @@ data class ClientProfileEditState(
     sealed interface DialogState {
         data class Error(val message: String) : DialogState
         data object Loading : DialogState
+        data object Success : DialogState
         data object ShowDeleteDialog : DialogState
         data object ShowUploadOptions : DialogState
+
     }
 }
 
