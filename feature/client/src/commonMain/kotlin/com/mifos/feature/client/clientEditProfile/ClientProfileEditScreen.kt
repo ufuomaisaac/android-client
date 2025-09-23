@@ -34,7 +34,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CheckCircle
-import androidx.compose.material.icons.filled.Error
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -212,7 +211,7 @@ private fun ClientProfileEditDialogs(
         }*/
         is ClientProfileEditState.DialogState.Error -> {
             MifosGenericDialog(
-                icon = Icons.Default.Error,
+                icon = Icons.Default.CheckCircle,
                 iconTint = Color.Red,
                 title = "Action Failed!",
                 message = "Something went wrong. Please try again.",
