@@ -197,13 +197,19 @@ private fun ClientProfileEditDialogs(
     when (state.dialogState) {
         is ClientProfileEditState.DialogState.Loading -> MifosProgressIndicator()
 
-        is ClientProfileEditState.DialogState.Error -> {
+        is ClientProfileEditState.DialogState.ShowDeleteDialog -> {}
+
+
+        /*is ClientProfileEditState.DialogState.Error -> {
             MifosErrorComponent(
                 isNetworkConnected = state.networkConnection,
                 message = state.dialogState.message,
                 isRetryEnabled = true,
                 onRetry = onRetry,
             )
+        }*/
+        is ClientProfileEditState.DialogState.Error -> {
+
         }
 
         ClientProfileEditState.DialogState.ShowDeleteDialog -> {

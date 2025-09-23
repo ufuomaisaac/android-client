@@ -11,19 +11,31 @@ package com.mifos.core.designsystem.component
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.mifos.core.designsystem.theme.DesignToken
@@ -197,6 +209,66 @@ fun MifosBasicDialog(
     )
 }
 
+@Composable
+fun MifosGenericDialog(
+    icon: ImageVector,
+    iconTint: Color = Color(0xFF4CAF50), // default green
+    title: String,
+    message: String,
+    confirmText: String = "Continue",
+    onConfirm: () -> Unit,
+    onDismissRequest: () -> Unit
+) {
+    AlertDialog(
+        onDismissRequest = onDismissRequest,
+        title = {
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                // 🔹 Icon (customizable)
+                Icon(
+                    imageVector = icon,
+                    contentDescription = null,
+                    tint = iconTint,
+                    modifier = Modifier.size(72.dp)
+                )
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                // 🔹 Title
+                Text(
+                    text = title,
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Bold,
+                    textAlign = TextAlign.Center
+                )
+            }
+        },
+        text = {
+            Text(
+                text = message,
+                style = MaterialTheme.typography.bodyMedium,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.fillMaxWidth()
+            )
+        },
+        confirmButton = {
+            Button(
+                onClick = onConfirm,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp)
+            ) {
+                Text(confirmText)
+            }
+        },
+        shape = RoundedCornerShape(12.dp),
+        containerColor = MaterialTheme.colorScheme.surface
+    )
+}
+
+
 @Preview
 @Composable
 private fun MifosBasicDialog_preview() {
@@ -250,4 +322,18 @@ private fun MifosBasicDialogPreview(
             onDismissRequest = {},
         )
     }
+}
+
+@Preview
+@Composable
+private fun MifosBasicDialogPreview(
+) {
+
+    MifosGenericDialog(
+        icon = Icons.Default.CheckCircle,
+        title = "Action Successful!",
+        message = "You have successfully performed the action.\nPlease continue to get back to home.",
+        onConfirm = {  },
+        onDismissRequest = {  }
+    )
 }
