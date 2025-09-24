@@ -111,6 +111,10 @@ internal fun ClientProfileDetailsScreen(
     EventsEffect(viewModel.eventFlow) { event ->
         when (event) {
             ClientProfileDetailsEvent.NavigateBack -> {
+                navController.previousBackStackEntry
+                    ?.savedStateHandle
+                    ?.set("profileUpdated", true)
+                //onNavigateBack()
                 onNavigateBack.invoke()
             }
 
