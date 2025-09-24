@@ -80,14 +80,38 @@ internal fun ClientProfileEditScreen(
 ) {
     val state by viewModel.stateFlow.collectAsStateWithLifecycle()
 
-    EventsEffect(viewModel.eventFlow) { event ->
+    /*EventsEffect(viewModel.eventFlow) { event ->
         when (event) {
             ClientProfileEditEvent.NavigateBack -> onNavigateBack()
             ClientProfileEditEvent.OnSaveSuccess -> {
                 onNavigateBack()
             }
         }
+    }*/
+    EventsEffect(viewModel.eventFlow) { event ->
+        when (event) {
+            ClientProfileEditEvent.NavigateBack -> {
+                // ✅ notify previous screen
+                navController.previousBackStackEntry
+                    ?.savedStateHandle
+                    ?.set("profileUpdated", true)
+
+                // ✅ now navigate back
+                onNavigateBack()
+            }//onNavigateBack()
+
+            ClientProfileEditEvent.OnSaveSuccess -> {
+                // ✅ notify previous screen
+                navController.previousBackStackEntry
+                    ?.savedStateHandle
+                    ?.set("profileUpdated", true)
+
+                // ✅ now navigate back
+                onNavigateBack()
+            }
+        }
     }
+
 
     ClientProfileEditScaffold(
         modifier = modifier,

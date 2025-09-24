@@ -44,7 +44,9 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -87,6 +89,24 @@ internal fun ClientProfileDetailsScreen(
     viewModel: ClientProfileDetailsViewModel = koinViewModel(),
 ) {
     val state by viewModel.stateFlow.collectAsStateWithLifecycle()
+
+
+
+    // ✅ Observe profileUpdated from savedStateHandle
+    val currentBackStackEntry = navController.currentBackStackEntry
+    val savedStateHandle = currentBackStackEntry?.savedStateHandle
+
+    val profileUpdated by savedStateHandle
+        ?.getStateFlow("profileUpdated", false)
+        ?.collectAsStateWithLifecycle(initialValue = false)
+        ?: remember { mutableStateOf(false) }
+
+    LaunchedEffect(profileUpdated) {
+        if (profileUpdated) {
+            viewModel.trySendAction(ClientProfileDetailsAction.OnRetry)
+            savedStateHandle?.set("profileUpdated", false) // reset after refresh
+        }
+    }
 
     EventsEffect(viewModel.eventFlow) { event ->
         when (event) {
