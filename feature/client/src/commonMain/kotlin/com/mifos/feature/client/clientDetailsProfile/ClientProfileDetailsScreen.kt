@@ -14,6 +14,7 @@ import androidclient.feature.client.generated.resources.arrow_downward
 import androidclient.feature.client.generated.resources.arrow_up
 import androidclient.feature.client.generated.resources.client_profile_actions
 import androidclient.feature.client.generated.resources.client_profile_details_title
+import androidclient.feature.client.generated.resources.client_profile_update_success
 import androidclient.feature.client.generated.resources.confirm_text
 import androidclient.feature.client.generated.resources.dialog_continue
 import androidclient.feature.client.generated.resources.dialog_unassign_message
@@ -91,21 +92,19 @@ internal fun ClientProfileDetailsScreen(
 ) {
     val state by viewModel.stateFlow.collectAsStateWithLifecycle()
 
-
-
     // ✅ Observe profileUpdated from savedStateHandle
     val currentBackStackEntry = navController.currentBackStackEntry
     val savedStateHandle = currentBackStackEntry?.savedStateHandle
 
     val profileUpdated by savedStateHandle
-        ?.getStateFlow("profileUpdated", false)
+        ?.getStateFlow(Res.string.client_profile_update_success.key, false)
         ?.collectAsStateWithLifecycle(initialValue = false)
         ?: remember { mutableStateOf(false) }
 
     LaunchedEffect(profileUpdated) {
         if (profileUpdated) {
             viewModel.trySendAction(ClientProfileDetailsAction.OnRetry)
-            savedStateHandle?.set("profileUpdated", false) // reset after refresh
+            savedStateHandle?.set(Res.string.client_profile_update_success.key, false) // reset after refresh
         }
     }
 
@@ -114,8 +113,7 @@ internal fun ClientProfileDetailsScreen(
             ClientProfileDetailsEvent.NavigateBack -> {
                 navController.previousBackStackEntry
                     ?.savedStateHandle
-                    ?.set("profileUpdated", true)
-                //onNavigateBack()
+                    ?.set(Res.string.client_profile_update_success.key, true)
                 onNavigateBack.invoke()
             }
 

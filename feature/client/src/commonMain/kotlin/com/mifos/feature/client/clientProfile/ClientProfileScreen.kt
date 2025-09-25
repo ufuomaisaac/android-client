@@ -13,6 +13,7 @@ import androidclient.feature.client.generated.resources.Res
 import androidclient.feature.client.generated.resources.client_profile_actions
 import androidclient.feature.client.generated.resources.client_profile_profile
 import androidclient.feature.client.generated.resources.client_profile_title
+import androidclient.feature.client.generated.resources.client_profile_update_success
 import androidclient.feature.client.generated.resources.name_na
 import androidclient.feature.client.generated.resources.office_na
 import androidclient.feature.client.generated.resources.string_not_available
@@ -65,13 +66,13 @@ internal fun ClientProfileScreen(
 
     val savedStateHandle = navController.currentBackStackEntry!!.savedStateHandle
     val profileUpdated by savedStateHandle
-        .getStateFlow("profileUpdated", false)
+        .getStateFlow(Res.string.client_profile_update_success.key, false)
         .collectAsStateWithLifecycle(initialValue = false)
 
     LaunchedEffect(profileUpdated) {
         if (profileUpdated) {
             viewModel.trySendAction(ClientProfileAction.OnRetry)
-            savedStateHandle.set("profileUpdated", false)
+            savedStateHandle.set(Res.string.client_profile_update_success.key, false)
         }
     }
 

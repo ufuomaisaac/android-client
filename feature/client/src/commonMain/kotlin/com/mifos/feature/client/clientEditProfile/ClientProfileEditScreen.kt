@@ -14,6 +14,7 @@ import androidclient.feature.client.generated.resources.account_number_prefix
 import androidclient.feature.client.generated.resources.arrow_up
 import androidclient.feature.client.generated.resources.cancel
 import androidclient.feature.client.generated.resources.choose_from_option
+import androidclient.feature.client.generated.resources.client_profile_update_success
 import androidclient.feature.client.generated.resources.delete_dialog_message
 import androidclient.feature.client.generated.resources.delete_dialog_title
 import androidclient.feature.client.generated.resources.delete_photo
@@ -80,33 +81,23 @@ internal fun ClientProfileEditScreen(
 ) {
     val state by viewModel.stateFlow.collectAsStateWithLifecycle()
 
-    /*EventsEffect(viewModel.eventFlow) { event ->
-        when (event) {
-            ClientProfileEditEvent.NavigateBack -> onNavigateBack()
-            ClientProfileEditEvent.OnSaveSuccess -> {
-                onNavigateBack()
-            }
-        }
-    }*/
     EventsEffect(viewModel.eventFlow) { event ->
         when (event) {
             ClientProfileEditEvent.NavigateBack -> {
                 // ✅ notify previous screen
                 navController.previousBackStackEntry
                     ?.savedStateHandle
-                    ?.set("profileUpdated", true)
+                    ?.set(Res.string.client_profile_update_success.key, true)
 
-                // ✅ now navigate back
                 onNavigateBack()
-            }//onNavigateBack()
+            }
 
             ClientProfileEditEvent.OnSaveSuccess -> {
                 // ✅ notify previous screen
                 navController.previousBackStackEntry
                     ?.savedStateHandle
-                    ?.set("profileUpdated", true)
+                    ?.set(Res.string.client_profile_update_success.key, true)
 
-                // ✅ now navigate back
                 onNavigateBack()
             }
         }
